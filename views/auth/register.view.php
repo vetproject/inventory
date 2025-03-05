@@ -25,6 +25,8 @@
                 <label for="password">Password:</label>
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
+            <input type="hidden" name="role" value="user">
+
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
     </div>

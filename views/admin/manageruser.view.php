@@ -4,7 +4,6 @@
 require_once 'layouts/header.php';
 ?>
 <div class="container-fluid">
-
     <div class="row">
         <aside class="d-none d-md-block bg-light sidebar bg-warning" style="width:25%;">
             <?php
@@ -15,20 +14,8 @@ require_once 'layouts/header.php';
         <div class="bg-teal" style="width: 75%;">
             <?php
             if ($_SERVER['REQUEST_URI'] == '/manage_users') {
-                // Add your admin-specific content here
-                // Function to fetch the user data
-                function getUserData()
-                {
-                    // Example data, replace with actual data fetching logic
-                    return [
-                        ['id' => 1, 'username' => 'user1', 'email' => 'user1@example.com', 'role' => 'admin'],
-                        ['id' => 2, 'username' => 'user2', 'email' => 'user2@example.com', 'role' => 'user'],
-                        ['id' => 3, 'username' => 'user3', 'email' => 'user3@example.com', 'role' => 'user']
-                    ];
-                }
-
-                // Fetch the user data
-                $userData = getUserData();
+                require_once __DIR__ . '/../../models/admin/admin.model.php';
+                $userData = get_allUsers();
 
                 if ($userData) {
                     echo '<table class="table table-bordered">';
@@ -43,11 +30,11 @@ require_once 'layouts/header.php';
                     echo '<tbody>';
                     foreach ($userData as $user) {
                         echo '<tr>';
-                        echo '<td>' . htmlspecialchars($user['username']) . '</td>';
+                        echo '<td>' . htmlspecialchars($user['name']) . '</td>';
                         echo '<td>' . htmlspecialchars($user['email']) . '</td>';
                         echo '<td>' . htmlspecialchars($user['role']) . '</td>';
                         echo '<td class="text-center">';
-                        echo '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editUserModal" data-id="' . htmlspecialchars($user['id']) . '" data-username="' . htmlspecialchars($user['username']) . '" data-email="' . htmlspecialchars($user['email']) . '" data-role="' . htmlspecialchars($user['role']) . '">Edit</button>';
+                        echo '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editUserModal" data-id="' . htmlspecialchars($user['id']) . '" data-username="' . htmlspecialchars($user['name']) . '" data-email="' . htmlspecialchars($user['email']) . '" data-role="' . htmlspecialchars($user['role']) . '">Edit</button>';
                         echo ' | ';
                         echo '<button type="button" class="btn btn-danger" onclick="window.location.href=\'/delete_user/' . htmlspecialchars($user['id']) . '\'">Delete</button>';
                         echo '</td>';

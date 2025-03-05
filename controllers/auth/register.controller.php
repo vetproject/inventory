@@ -7,26 +7,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8');
     $email = htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8');
     $password = htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8');
+    $role = htmlspecialchars($_POST['role'], ENT_QUOTES, 'UTF-8');
+    $image = 'https://i.pinimg.com/236x/5f/40/6a/5f406ab25e8942cbe0da6485afd26b71.jpg';
 
     // Encrypt the password
     $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
     // Register the user
-    $result = register($name, $email, $hashed_password);
+    $result = register($name, $email, $hashed_password, $role, $image);
 
     if ($result) {
-        // Store user info in session
-        $_SESSION['user'] = [
-            'id' => $user['id'],
-            'name' => $user['name'],
-            'email' => $user['email'],
-            'password' => $user['password']
-        ];
-        header('Location: /');
-        exit;
+        header('Location: /register');
     } else {
-        // Handle registration error
-        echo "Registration failed.";
+        echo 'Failed to register user.';
     }
+
+    
+    exit;
 }
 ?>

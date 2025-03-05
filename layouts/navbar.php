@@ -35,7 +35,7 @@
 
                         </a>
                     </li>
-                    <li class="nav-item">
+                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center text-white" href="/view_reports">
                             <i class="fa fa-chart-line mr-2" style="font-size: 1.5em;"></i> <span>View Reports</span>
                         </a>

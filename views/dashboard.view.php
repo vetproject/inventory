@@ -17,9 +17,11 @@
             if ($_SERVER['REQUEST_URI'] == '/dashboard') {
             // Add your admin-specific content here
             include 'views/admin/dashbaord.admin.view.php';
+            $_SESSION['user']['name'];
             } else {
             // Add your default content here
             echo '<h1>Welcome to the </h1>';
+            $_SESSION['user']['name'];
             }
             ?>
         </div>

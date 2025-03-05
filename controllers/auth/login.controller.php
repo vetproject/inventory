@@ -17,7 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'id' => $user['id'],
             'name' => $user['name'],
             'email' => $user['email'],
-            'password' => $user['password']
+            'password' => $user['password'],
+            'image' => $user['image']
         ];
         header('Location: /dashboard');
         exit;
