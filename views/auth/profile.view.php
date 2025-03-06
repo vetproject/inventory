@@ -16,7 +16,12 @@
     <div class="container mt-5" style="width: 500px;">
         <?php
         require_once __DIR__ . '../../../models/auth/auth.model.php';
-        $user = get_user($_SESSION['user']['id']);
+        if (isset($_SESSION['user']) && isset($_SESSION['user']['id'])) {
+            $user = get_user($_SESSION['user']['id']);
+        } else {
+            // Handle the case where the user is not logged in or session is not set
+            $user = null;
+        }
         ?>
         <div class="card text-center">
             <div class="card-header bg-primary text-white">
@@ -24,9 +29,9 @@
             </div>
             <div class="card-body">
                 <img id="profileImage" src="<?= isset($user['image']) && !empty($user['image']) ? $user['image'] : 'https://i.pinimg.com/236x/5f/40/6a/5f406ab25e8942cbe0da6485afd26b71.jpg' ?>" class="rounded-circle mb-3" style="width: 100px; height: 100px;" alt="User Image">
-                <h5 class="card-title"><strong><?= $user['name'] ?></strong></h5>
-                <p class="card-text"><?= $user['email'] ?></p>
-                <p class="card-text"><strong>Zoho User ID:</strong> <?= $user['id'] ?></p>
+                <h5 class="card-title"><strong><?= $user ? $user['name'] : 'Guest' ?></strong></h5>
+                <p class="card-text"><?= $user ? $user['email'] : 'No email available' ?></p>
+                <p class="card-text"><strong>Zoho User ID:</strong> <?= $user ? $user['id'] : 'N/A' ?></p>
                 <p class="card-text"><strong>Super admin:</strong> bpearson@zylker.com</p>
             </div>
             <div class="card-footer text-muted">
