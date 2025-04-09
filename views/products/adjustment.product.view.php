@@ -3,7 +3,6 @@
 <?php
 require_once 'layouts/header.php';
 ?>
-
 <div class="container-fluid">
     <div class="row">
         <aside class="d-none d-md-block bg-light sidebar bg-warning" style="width:25%;">
@@ -14,13 +13,14 @@ require_once 'layouts/header.php';
 
         <div class="bg-teal" style="width: 75%;">
             <?php
-            if ($_SERVER['REQUEST_URI'] == '/view_reports') {
+            if ($_SERVER['REQUEST_URI'] == '/adjustment_product') {
                 // Add your admin-specific content here
-                ?>
-                <h1 class="text-center">Inventory Report</h1>
-                <?php
+            ?>
+                <h4 class="text-center">Inventory Report</h4>
+            <?php
                 // Function to fetch the report data
-                function getInventoryReport() {
+                function getInventoryReport()
+                {
                     // Example data, replace with actual data fetching logic
                     return [
                         ['name' => 'Item 1', 'quantity' => 10, 'price' => 100],
@@ -28,29 +28,24 @@ require_once 'layouts/header.php';
                         ['name' => 'Item 3', 'quantity' => 20, 'price' => 200]
                     ];
                 }
-                
+
                 // Fetch the report data
                 $reportData = getInventoryReport();
-                
+
                 if ($reportData) {
-                    echo '<table class="table table-bordered">';
-                    echo '<thead>';
-                    echo '<tr class="text-center">';
-                    echo '<th>Item</th>';
-                    echo '<th>Quantity</th>';
-                    echo '<th>Price</th>';
-                    echo '</tr>';
-                    echo '</thead>';
-                    echo '<tbody>';
-                    foreach ($reportData as $item) {
-                        echo '<tr>';
-                        echo '<td>' . htmlspecialchars($item['name']) . '</td>';
-                        echo '<td>' . htmlspecialchars($item['quantity']) . '</td>';
-                        echo '<td>' . htmlspecialchars($item['price']) . '</td>';
-                        echo '</tr>';
+                    echo '<div class="list-group">';
+                    foreach ($reportData as $index => $item) {
+                        echo '<a href="#" class="list-group-item list-group-item-action" data-toggle="collapse" data-target="#item-details-' . $index . '" aria-expanded="false" aria-controls="item-details-' . $index . '">';
+                        echo '<h5 class="mb-1">' . htmlspecialchars($item['name']) . '</h5>';
+                        echo '</a>';
+                        echo '<div class="collapse" id="item-details-' . $index . '">';
+                        echo '<div class="card card-body">';
+                        echo '<p class="mb-1">Quantity: ' . htmlspecialchars($item['quantity']) . '</p>';
+                        echo '<p class="mb-1">Price: $' . htmlspecialchars($item['price']) . '</p>';
+                        echo '</div>';
+                        echo '</div>';
                     }
-                    echo '</tbody>';
-                    echo '</table>';
+                    echo '</div>';
                 } else {
                     echo '<p>No data available.</p>';
                 }

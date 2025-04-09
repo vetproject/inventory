@@ -1,19 +1,18 @@
 <?php
 require_once __DIR__ . '/../../config/db.php';
 
-function add_user($name, $email, $password, $role, $image): bool {
-    global $mysqli;
-    $statement = $mysqli->prepare("INSERT INTO users (name, email, password, role, image) VALUES (?, ?, ?, ?, ?)");
+function add_user($name, $email, $hashed_password, $role,$image): bool {
+    global $mysqli; // Use the mysqli connection
+    $statement = $mysqli->prepare("INSERT INTO users (name, email, password, role,image) VALUES (?, ?, ?, ?,?)");
     
     if ($statement === false) {
         die("Prepare failed: " . $mysqli->error);
     }
-    
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $statement->bind_param('sssss', $name, $email, $hashedPassword, $role, $image);
+
+    $statement->bind_param('sssss', $name, $email, $hashed_password, $role, $image); // Bind the parameters
     $result = $statement->execute();
     
-    $statement->close();
+    $statement->close(); // Close the statement
     return $result;
 }
 

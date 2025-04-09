@@ -17,12 +17,17 @@ $routes = [
     // admin views
     '/admin' => 'views/admin/dashbaord.admin.view.php',
     '/manage_users' => 'views/admin/manageruser.view.php',
-    // '/manage_products' => 'views/admin/manageproducts.view.php',
     '/view_reports' => 'views/admin/reports.view.php',
 
     // navbar layout
     '/navbar' => 'layouts/navbar.php',
     '/header' => 'layouts/header.php',
+
+    // product views
+    '/products' => 'views/products/product.view.php',
+    '/import_product' => 'views/products/import.product.view.php',
+    '/export_product' => 'views/products/export.product.view.php',
+    '/adjustment_product' => 'views/products/adjustment.product.view.php',
     
 ];
 

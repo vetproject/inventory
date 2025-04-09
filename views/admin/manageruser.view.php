@@ -14,7 +14,7 @@ require_once 'layouts/header.php';
         <div class="bg-teal" style="width: 75%;">
 
         <div class="d-flex justify-content-between align-items-center p-2">
-            <h4>User Management</h4>
+            <h5>User Management</h5>
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addUserModal">
                 <i class="fas fa-user-plus"></i> Add New User
             </button>
@@ -45,15 +45,15 @@ require_once 'layouts/header.php';
                     echo '<tbody>';
                     foreach ($userData as $user) {
                         echo '<tr>';
-                        echo '<td>' . htmlspecialchars($user['name']) . '</td>';
-                        echo '<td>' . htmlspecialchars($user['email']) . '</td>';
-                        echo '<td>' . htmlspecialchars($user['role']) . '</td>';
+                        echo '<td class="text-center p-1 m-0 align-middle">' . htmlspecialchars($user['name']) . '</td>';
+                        echo '<td class=" p-1 m-0 align-middle">' . htmlspecialchars($user['email']) . '</td>';
+                        echo '<td class="text-center p-1 m-0 align-middle">' . htmlspecialchars($user['role']) . '</td>';
                         echo '<td class="text-center">';
-                        echo '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editUserModal" data-id="' . htmlspecialchars($user['id']) . '" data-username="' . htmlspecialchars($user['name']) . '" data-email="' . htmlspecialchars($user['email']) . '" data-role="' . htmlspecialchars($user['role']) . '">Edit</button>';
-                        echo ' | ';
+                        echo '<button type="button" class="btn btn-sm btn-primary class="text-center p-1 m-0 align-middle"" data-toggle="modal" data-target="#editUserModal" data-id="' . htmlspecialchars($user['id']) . '" data-username="' . htmlspecialchars($user['name']) . '" data-email="' . htmlspecialchars($user['email']) . '" data-role="' . htmlspecialchars($user['role']) . '">Edit</button>';
+                        echo ' ';
                         echo '<form method="POST" action="controllers/admin/delete.user.php" style="display:inline;">';
                         echo '<input type="hidden" name="id" value="' . htmlspecialchars($user['id']) . '">';
-                        echo '<button type="submit" class="btn btn-danger">Delete</button>';
+                        echo '<button type="submit" class="btn btn-sm btn-danger">Delete</button>';
                         echo '</form>';
                         echo '</td>';
                         echo '</tr>';
@@ -73,12 +73,12 @@ require_once 'layouts/header.php';
 </div>
 
 <!-- Add User Modal -->
-<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
+<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" style="font-size: 1.5rem;">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -96,13 +96,6 @@ require_once 'layouts/header.php';
                         <label for="addPassword">Password</label>
                         <input type="password" class="form-control" name="password" id="addPassword" required>
                     </div>
-                    <div class="form-group">
-                        <label for="addRole">Role</label>
-                        <select class="form-control" name="role" id="addRole" required>
-                            <option value="admin">Admin</option>
-                            <option value="user">User</option>
-                        </select>
-                    </div>
                     <button type="submit" class="btn btn-success">Add User</button>
                 </form>
             </div>
@@ -111,12 +104,12 @@ require_once 'layouts/header.php';
 </div>
 
 <!-- Edit User Modal -->
-<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" style="font-size: 1.5rem;">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
