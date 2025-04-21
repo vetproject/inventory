@@ -1,4 +1,11 @@
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<?php
+require_once __DIR__ . '/../../config/db.php';
+require_once __DIR__ . '/../../models/products/product.model.php';
+
+$categories = countCategories();
+$products = countProducts();
+
+?>
 
 <body style="background-color: #f8f9fa; font-family: Arial, sans-serif; overflow-x: hidden;">
     <div class="container m-0">
@@ -6,18 +13,16 @@
             <div class="col-md-3 mb-4">
                 <div class="card shadow-sm border-0 text-center h-100" style="background-color: #fff3cd;">
                     <div class="card-body">
-                        <h5 class="card-title text-warning">Used Space</h5>
-                        <h3 class="card-text">49/50GB</h3>
-                        <p class="text-muted">Get More</p>
+                        <h5 class="card-title text-warning">Categories</h5>
+                        <h3 class="card-text"><?php echo $categories ?></h3>
                     </div>
                 </div>
             </div>
             <div class="col-md-3 mb-4">
                 <div class="card shadow-sm border-0 text-center h-100" style="background-color: #d4edda;">
                     <div class="card-body">
-                        <h5 class="card-title text-success">Revenue</h5>
-                        <h3 class="card-text">$34,245</h3>
-                        <p class="text-muted">Last 24 Hours</p>
+                        <h5 class="card-title text-success">Products</h5>
+                        <h3 class="card-text"><?php echo $products ?></h3>
                     </div>
                 </div>
             </div>
@@ -26,7 +31,6 @@
                     <div class="card-body">
                         <h5 class="card-title text-danger">Fixed Issues</h5>
                         <h3 class="card-text">75</h3>
-                        <p class="text-muted">Tracked </p>
                     </div>
                 </div>
             </div>
@@ -35,7 +39,6 @@
                     <div class="card-body">
                         <h5 class="card-title text-info">Followers</h5>
                         <h3 class="card-text">+245</h3>
-                        <p class="text-muted">Just Updated</p>
                     </div>
                 </div>
             </div>

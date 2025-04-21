@@ -238,4 +238,31 @@ function getAllExports(): array {
     return $exports;
 }
 
+function countCategories(): int {
+    global $mysqli; // Use the mysqli connection
+    $query = "SELECT COUNT(*) as count FROM categories";
+    $result = $mysqli->query($query);
+    
+    if ($result === false) {
+        die("Query failed: " . $mysqli->error);
+    }
+
+    $count = $result->fetch_assoc()['count'];
+    $result->free(); // Free the result set
+    return $count;
+}
+
+function countProducts(): int {
+    global $mysqli; // Use the mysqli connection
+    $query = "SELECT COUNT(*) as count FROM products";
+    $result = $mysqli->query($query);
+    
+    if ($result === false) {
+        die("Query failed: " . $mysqli->error);
+    }
+
+    $count = $result->fetch_assoc()['count'];
+    $result->free(); // Free the result set
+    return $count;
+}
 ?>
