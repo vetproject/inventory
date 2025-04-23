@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($user && password_verify($password, $user['password'])) {
         // Store user info in session
-        $_SESSION['user'] = [
+        $_SESSION['user'] = [ 
             'id' => $user['id'],
             'name' => $user['name'],
             'email' => $user['email'],

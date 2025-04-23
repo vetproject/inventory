@@ -19,15 +19,15 @@ $categories = getAllCategories();
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
-<div class="row g-2 align-items-center mb-3 m-3 bg-secondary p-2 rounded ">
-    <div class="col-md-5 ml-1">
+<div class="row row-cols-1 row-cols-md-4 g-2 align-items-center mb-3 m-3 bg-secondary p-2 rounded">
+    <div class="col">
         <div class="input-group input-group-sm">
-            <input type="text" id="searchProduct" class="form-control border-secondary " placeholder="🔍 Search by product name" style="padding-left: 15px;">
+            <input type="text" id="searchProduct" class="form-control border-secondary" placeholder="🔍 Search by product name" style="padding-left: 15px;">
         </div>
     </div>
-    <div class="col-md-3.5 ml-3">
+    <div class="col">
         <div class="input-group input-group-sm">
-            <label for="filterCategory" class="p-1 input-group-text bg-light text-dark">Category</label>
+            <!-- <label for="filterCategory" class="p-1 input-group-text bg-light text-dark">Category</label> -->
             <select id="filterCategory" class="form-select border-secondary">
                 <option value="">All Categories</option>
                 <?php foreach ($categories as $category): ?>
@@ -36,19 +36,26 @@ $categories = getAllCategories();
             </select>
         </div>
     </div>
-    <div class="col-md-3.5 ml-4">
+    <div class="col">
         <div class="input-group input-group-sm">
-            <label for="filterBrand" class="p-1 input-group-text bg-light text-dark">Brand</label>
+            <!-- <label for="filterBrand" class="p-1 input-group-text bg-light text-dark">Brand</label> -->
             <select id="filterBrand" class="form-select border-secondary">
-            <option value="">All Brands</option>
-            <?php foreach ($brands as $brand): ?>
-                <option value="<?= htmlspecialchars($brand['brand']) ?>"><?= htmlspecialchars($brand['brand']) ?></option>
-            <?php endforeach; ?>
+                <option value="">All Brands</option>
+                <?php foreach ($brands as $brand): ?>
+                    <option value="<?= htmlspecialchars($brand['brand']) ?>"><?= htmlspecialchars($brand['brand']) ?></option>
+                <?php endforeach; ?>
             </select>
         </div>
     </div>
-
+    <div class="col">
+        <div class="input-group input-group-sm">
+            <label for="filterDate" class="p-1 input-group-text bg-light text-dark">Date</label>
+            <input type="date" id="filterDate" class="form-control border-secondary">
+        </div>
+    </div>
 </div>
+
+
 
 <div class="d-flex justify-content-end m-3">
     <button class="btn btn-success btn-xs export-button" style="font-size: 12px; padding: 3px 6px;"
@@ -68,6 +75,7 @@ $categories = getAllCategories();
                     <th>Quantity</th>
                     <th>Category</th>
                     <th>Brand</th>
+                    <th>Date</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -82,6 +90,7 @@ $categories = getAllCategories();
                         </td>
                         <td class="text-center p-1 align-middle"><?= htmlspecialchars($product['category']) ?></td>
                         <td class="p-1 align-middle"><?= htmlspecialchars($product['brand']) ?></td>
+                        <td class="text-center p-1 align-middle"><?= htmlspecialchars($product['created_at']) ?></td>
                         <td class="p-1 align-middle text-center">
                             <button class="btn btn-warning btn-xs edit-button" style="font-size: 10px; padding: 2px 5px;"
                                 data-id="<?= htmlspecialchars($product['id']) ?>"
@@ -303,25 +312,30 @@ $categories = getAllCategories();
 
 
 <!-- Filter and search functionality -->
-
 <script>
     $(document).ready(function() {
         // Filter and search functionality
-        $('#searchProduct, #filterCategory,#filterBrand').on('input change', function() {
+        $('#searchProduct, #filterCategory, #filterBrand, #filterDate').on('input change', function() {
             const searchValue = $('#searchProduct').val().toLowerCase();
             const filterValue = $('#filterCategory').val();
             const filterBrandValue = $('#filterBrand').val();
+            const filterDateValue = $('#filterDate').val();
 
             $('tbody tr').each(function() {
                 const productName = $(this).find('td:nth-child(2)').text().toLowerCase();
                 const productCategory = $(this).find('td:nth-child(4)').text();
                 const productBrand = $(this).find('td:nth-child(5)').text();
+                const productDate = $(this).find('td:nth-child(6)').text().split(' ')[0]; // Extract only the date part (yyyy-mm-dd)
+
+                const formattedFilterDate = filterDateValue ? new Date(filterDateValue).toLocaleDateString('en-GB') : ""; // Format filter date to dd/mm/yy
+                const formattedProductDate = productDate ? new Date(productDate).toLocaleDateString('en-GB') : ""; // Format product date to dd/mm/yy
 
                 const matchesSearch = productName.includes(searchValue);
                 const matchesFilter = filterValue === "" || productCategory === filterValue;
                 const matchesBrandFilter = filterBrandValue === "" || productBrand === filterBrandValue;
+                const matchesDateFilter = filterDateValue === "" || formattedProductDate === formattedFilterDate;
 
-                if (matchesSearch && matchesFilter && matchesBrandFilter) {
+                if (matchesSearch && matchesFilter && matchesBrandFilter && matchesDateFilter) {
                     $(this).show();
                 } else {
                     $(this).hide();
