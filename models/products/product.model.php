@@ -79,6 +79,39 @@ function addProduct($name, $quantity, $category, $brand, $price,$userId): bool {
     return $result;
 }
 
+function report_product($name, $quantity, $category, $brand, $price,$userId): bool {
+    global $mysqli; // Use the mysqli connection
+    $statement = $mysqli->prepare("INSERT INTO report_product (name, quantity, category, brand, price, user_id) VALUES (?, ?, ?, ?, ?, ?)");
+    
+    if ($statement === false) {
+        die("Prepare failed: " . htmlspecialchars($mysqli->error));
+    }
+
+    $statement->bind_param('sissdi', $name, $quantity, $category, $brand, $price, $userId);
+    $result = $statement->execute();
+    
+    if ($result === false) {
+        die("Execute failed: " . htmlspecialchars($statement->error));
+    }
+
+    $statement->close(); 
+    return $result;
+}
+
+function getAllreports($userId): array {
+    global $mysqli; // Use the mysqli connection
+    $query = "SELECT * FROM report_product WHERE user_id = $userId ORDER BY id DESC";
+    $result = $mysqli->query($query);
+    
+    if ($result === false) {
+        die("Query failed: " . $mysqli->error);
+    }
+
+    $reports = $result->fetch_all(MYSQLI_ASSOC);
+    $result->free(); // Free the result set
+    return $reports;
+}
+
 function getAllProducts($userId): array {
     global $mysqli; // Use the mysqli connection
     $statement = $mysqli->prepare("SELECT * FROM products WHERE user_id = ? ORDER BY id DESC");

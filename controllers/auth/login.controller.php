@@ -25,7 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     } else {
         // Handle login error
-        echo "Login failed.";
+        header('Location: /login?error=invalid_credentials');
+        exit;
     }
 }
 ?>

@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // echo "$name, $quantity, $category, $brand, $price ,$userId" ;
 
     $result = addProduct($name, $quantity, $category, $brand, $price, $userId);
+    $report = report_product($name, $quantity, $category, $brand, $price, $userId);
     
     if ($result) {
         header('Location: /products');
