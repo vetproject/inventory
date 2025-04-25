@@ -29,11 +29,13 @@
                             <i class="fa fa-tachometer-alt mr-2" style="font-size: 1.5em;"></i> <span>Dashboard</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center text-white" href="/manage_users">
-                            <i class="fa fa-users mr-2" style="font-size: 1.5em;"></i> <span>Manage Users</span>
-                        </a>
-                    </li>
+                    <?php if (isset($_SESSION['user']['role']) && $_SESSION['user']['role'] === 'admin'): ?>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center text-white" href="/manage_users">
+                                <i class="fa fa-users mr-2" style="font-size: 1.5em;"></i> <span>Manage Users</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center text-white" href="/products">
                             <i class="fa fa-boxes mr-2" style="font-size: 1.5em;"></i> <span>Manage Products</span>

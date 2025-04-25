@@ -270,6 +270,8 @@ $categories = getAllCategories();
                         <label for="editProductPrice" class="form-label">Price</label>
                         <input type="text" class="form-control" id="editProductPrice" name="price" required>
                     </div>
+                    <input type="hidden" name="user_id" value="<?= htmlspecialchars($userId) ?>">
+                    <input type="hidden" name="old_quantity" id="old_quantity">
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Save changes</button>
@@ -295,6 +297,7 @@ $categories = getAllCategories();
             $('#editProductCategory').val(category);
             $('#editProductBrand').val(brand);
             $('#editProductPrice').val(price);
+            $('#old_quantity').val(quantity);
 
             $('#editProductModal').modal('show');
         });

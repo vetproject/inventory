@@ -298,4 +298,19 @@ function countProducts(): int {
     $result->free(); // Free the result set
     return $count;
 }
+
+
+function sumPrice(): float {
+    global $mysqli; // Use the mysqli connection
+    $query = "SELECT SUM(price) as total FROM report_product";
+    $result = $mysqli->query($query);
+    
+    if ($result === false) {
+        die("Query failed: " . $mysqli->error);
+    }
+
+    $total = $result->fetch_assoc()['total'];
+    $result->free(); // Free the result set
+    return (float)$total;
+}
 ?>
