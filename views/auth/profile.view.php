@@ -3,71 +3,97 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        .profile-card {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #dee2e6;
+        }
+
+        .camera-icon {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: #0d6efd;
+            border-radius: 50%;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .camera-icon i {
+            color: white;
+            font-size: 16px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+    </style>
 </head>
 
-<body>
+<body class="bg-dark">
 
-    <div class="container mt-5" style="width: 500px;">
-        <?php
-        require_once __DIR__ . '../../../models/auth/auth.model.php';
-        if (isset($_SESSION['user']) && isset($_SESSION['user']['id'])) {
-            $user = get_user($_SESSION['user']['id']);
-        } else {
-            // Handle the case where the user is not logged in or session is not set
-            $user = null;
-        }
-        ?>
-        <div class="card text-center">
-            <div class="card-header bg-primary text-white">
-                User Profile
+    <div class="modal-dialog ">
+        <div class="modal-content profile-card bg-light">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-person-fill"></i> User Profile
+                </h5>
+                <a href="/dashboard" class="btn-close text-decoration-none text-danger" aria-label="Close"></a>
             </div>
-            <div class="card-body">
-                <img id="profileImage" src="<?= isset($user['image']) && !empty($user['image']) ? $user['image'] : 'https://i.pinimg.com/236x/5f/40/6a/5f406ab25e8942cbe0da6485afd26b71.jpg' ?>" class="rounded-circle mb-3" style="width: 100px; height: 100px;" alt="User Image">
-                <h5 class="card-title"><strong><?= $user ? $user['name'] : 'Guest' ?></strong></h5>
-                <p class="card-text"><?= $user ? $user['email'] : 'No email available' ?></p>
-                <p class="card-text"><strong>Zoho User ID:</strong> <?= $user ? $user['id'] : 'N/A' ?></p>
-                <p class="card-text"><strong>Super admin:</strong> bpearson@zylker.com</p>
-            </div>
-            <div class="card-footer text-muted">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editProfileModal">Edit</button>
-                <!-- Edit Profile Modal -->
-                <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="controllers/auth/profile.controller.php" method="post">
-                                    <div class="form-group">
-                                        <label for="name">Name</label>
-                                        <input type="text" class="form-control" id="name" name="name" value="<?= $user['name'] ?>" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input type="email" class="form-control" id="email" name="email" value="<?= $user['email'] ?>" required>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Save changes</button>
-                                </form>
-                            </div>
+            <div class="modal-body d-flex align-items-center justify-content-evenly p-4">
+
+                <form action="controllers/admin/profile.controller.php" method="POST" enctype="multipart/form-data" id="imageForm">
+                    <label for="fileInput" class="profile-wrapper mb-3">
+                        <?php
+                        if (!empty($_SESSION['user']['image'])) {
+                            echo '<img src="data:image/jpeg;base64,' . $_SESSION['user']['image'] . '" alt="User Avatar" class="profile-img">';
+                        } else {
+                            echo '<img src="./uploads/iconUser.jpg" alt="Default Avatar" class="profile-img">';
+                        }
+                        ?>
+                        <div class="camera-icon">
+                            <i class="bi bi-camera-fill"></i>
                         </div>
-                    </div>
-                </div>
-                <form action="/logout" method="post" style="display: inline;">
-                    <button type="submit" class="btn btn-danger">Sign out</button>
+                    </label>
+                    <input type="file" name="image" id="fileInput" onchange="document.getElementById('imageForm').submit();">
+                    <input type="hidden" name="upload" value="1">
                 </form>
+                <div class="ms-3">
+                    <h5 class="mb-1 text-primary"><?php echo $_SESSION['user']['name']; ?></h5>
+                    <p class="mb-1"><?php echo $_SESSION['user']['email']; ?></p>
+                    <p class="text-muted mb-0">
+                        <i class="bi bi-telephone"></i> 2222223333
+                    </p>
+                </div>
+
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

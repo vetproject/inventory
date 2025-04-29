@@ -5,13 +5,21 @@
             <div class="user-card card shadow-sm bg-white text-center ctm-border-radius grow">
                 <div class="user-info card-body">
                     <div class="user-avatar mb-4">
-                        <?php
-                        if (isset($_SESSION['user']['role']) && $_SESSION['user']['role'] === 'admin') {
-                            echo '<a href="/profile"><img src="../assets/images/admin.png" alt="User Avatar" class="img-fluid rounded-circle" width="100px" style="height: 100px;"></a>';
-                        } else {
-                            echo '<a href="/profile"><img src="../assets/images/user.jpg" alt="User Avatar" class="img-fluid rounded-circle" width="100px" style="height: 100px;"></a>';
-                        }
-                        ?>
+                        <a href="/profile">
+                            <?php
+                            if (!empty($_SESSION['user']['image'])) {
+                                echo '<img src="data:image/jpeg;base64,' . $_SESSION['user']['image'] . '" alt="User Avatar" class="profile-img" style="width: 100px; height: 100px; border-radius: 50%;">';
+                            } else {
+                                $defaultAvatarPath = './uploads/iconUser.jpg'; 
+                                // Check if the default avatar file exists
+                                if (file_exists($defaultAvatarPath)) {
+                                    echo '<img src="' . $defaultAvatarPath . '" alt="Default Avatar" class="profile-img" style="width: 100px; height: 100px; border-radius: 50%;">';
+                                } else {
+                                    echo '<img src="https://via.placeholder.com/100" alt="Default Avatar" class="profile-img" style="width: 100px; height: 100px; border-radius: 50%;">';
+                                }
+                            }
+                            ?>
+                        </a>
 
                     </div>
                     <div class="user-details">

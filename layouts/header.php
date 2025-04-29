@@ -6,6 +6,13 @@
     <title>Inventory Management</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+<?php
+require_once './config/db.php';
+require_once './models/products/product.model.php';
+
+$userId = isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : null;
+$lessQuantity = getLessQuantity($userId);
+?>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-dark p-3" style="height: 11vh;">
         <a class="navbar-brand text-light" href="/dashboard">Inventory Management</a>
@@ -19,9 +26,9 @@
                         Notifications
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationsDropdown">
-                        <a class="dropdown-item" href="#">Notification 1</a>
-                        <a class="dropdown-item" href="#">Notification 2</a>
-                        <a class="dropdown-item" href="#">Notification 3</a>
+                        <?php foreach ($lessQuantity as $item): ?>
+                            <a class="dropdown-item" href="#"><?php echo htmlspecialchars($item['name']); ?> is low in stock</a>
+                        <?php endforeach; ?>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
