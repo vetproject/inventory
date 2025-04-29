@@ -69,46 +69,52 @@ $categories = getAllCategories();
                 </tr>
             </thead>
             <tbody>
-                <?php $loopIndex = 0; ?>
-                <?php foreach ($products as $product): ?>
-                    <tr style="font-size: 12px;">
-                        <td class="text-center p-1 align-middle"><?= ++$loopIndex ?></td>
-                        <td class="p-1 align-middle"><?= htmlspecialchars($product['name']) ?></td>
-                        <td class="text-center p-1 align-middle quantity-cell" data-id="<?= htmlspecialchars($product['id']) ?>">
-                            <?= htmlspecialchars($product['quantity']) ?>
-                        </td>
-                        <td class="text-center p-1 align-middle"><?= htmlspecialchars($product['category']) ?></td>
-                        <td class="p-1 align-middle"><?= htmlspecialchars($product['brand']) ?></td>
-                        <td class="p-1 align-middle text-center">
-                            <button class="btn btn-warning btn-xs edit-button" style="font-size: 10px; padding: 2px 5px;"
-                                data-id="<?= htmlspecialchars($product['id']) ?>"
-                                data-name="<?= htmlspecialchars($product['name']) ?>"
-                                data-quantity="<?= htmlspecialchars($product['quantity']) ?>"
-                                data-category="<?= htmlspecialchars($product['category']) ?>"
-                                data-brand="<?= htmlspecialchars($product['brand']) ?>"
-                                data-price="<?= htmlspecialchars($product['price']) ?>" title="Edit Product">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-
-                            <button class="btn btn-danger btn-xs decreaseProduct" style="font-size: 10px; padding: 2px 5px; display: none;" title="Decrease Quantity"
-                                data-id="<?= htmlspecialchars($product['id']) ?>"
-                                data-name="<?= htmlspecialchars($product['name']) ?>">
-                                <i class="fas fa-minus-circle"></i> Decrease
-                            </button>
-                            <button class="btn btn-primary btn-xs addProduct" style="font-size: 10px; padding: 2px 5px; display: none;" title="Increase Quantity"
-                                data-id="<?= htmlspecialchars($product['id']) ?>"
-                                data-name="<?= htmlspecialchars($product['name']) ?>">
-                                <i class="fas fa-plus-circle"></i> Add
-                            </button>
-                            <form class="delete-button" method="POST" action="controllers/products/delete.product.controller.php" style="display: inline;">
-                                <input type="hidden" name="id" value="<?= htmlspecialchars($product['id']) ?>">
-                                <button type="submit" class="btn btn-danger btn-xs" style="font-size: 10px; padding: 2px 5px;" title="Delete Product">
-                                    <i class="fas fa-trash"></i> Delete
-                                </button>
-                            </form>
-                        </td>
+                <?php if (empty($products)): ?>
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">No products available.</td>
                     </tr>
-                <?php endforeach; ?>
+                <?php else: ?>
+                    <?php $loopIndex = 0; ?>
+                    <?php foreach ($products as $product): ?>
+                        <tr style="font-size: 12px;">
+                            <td class="text-center p-1 align-middle"><?= ++$loopIndex ?></td>
+                            <td class="p-1 align-middle"><?= htmlspecialchars($product['name']) ?></td>
+                            <td class="text-center p-1 align-middle quantity-cell" data-id="<?= htmlspecialchars($product['id']) ?>">
+                                <?= htmlspecialchars($product['quantity']) ?>
+                            </td>
+                            <td class="text-center p-1 align-middle"><?= htmlspecialchars($product['category']) ?></td>
+                            <td class="p-1 align-middle"><?= htmlspecialchars($product['brand']) ?></td>
+                            <td class="p-1 align-middle text-center">
+                                <button class="btn btn-warning btn-xs edit-button" style="font-size: 10px; padding: 2px 5px;"
+                                    data-id="<?= htmlspecialchars($product['id']) ?>"
+                                    data-name="<?= htmlspecialchars($product['name']) ?>"
+                                    data-quantity="<?= htmlspecialchars($product['quantity']) ?>"
+                                    data-category="<?= htmlspecialchars($product['category']) ?>"
+                                    data-brand="<?= htmlspecialchars($product['brand']) ?>"
+                                    data-price="<?= htmlspecialchars($product['price']) ?>" title="Edit Product">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+
+                                <button class="btn btn-danger btn-xs decreaseProduct" style="font-size: 10px; padding: 2px 5px; display: none;" title="Decrease Quantity"
+                                    data-id="<?= htmlspecialchars($product['id']) ?>"
+                                    data-name="<?= htmlspecialchars($product['name']) ?>">
+                                    <i class="fas fa-minus-circle"></i> Decrease
+                                </button>
+                                <button class="btn btn-primary btn-xs addProduct" style="font-size: 10px; padding: 2px 5px; display: none;" title="Increase Quantity"
+                                    data-id="<?= htmlspecialchars($product['id']) ?>"
+                                    data-name="<?= htmlspecialchars($product['name']) ?>">
+                                    <i class="fas fa-plus-circle"></i> Add
+                                </button>
+                                <form class="delete-button" method="POST" action="controllers/products/delete.product.controller.php" style="display: inline;">
+                                    <input type="hidden" name="id" value="<?= htmlspecialchars($product['id']) ?>">
+                                    <button type="submit" class="btn btn-danger btn-xs" style="font-size: 10px; padding: 2px 5px;" title="Delete Product">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>

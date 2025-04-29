@@ -63,7 +63,7 @@
                 </h5>
                 <a href="/dashboard" class="btn-close text-decoration-none text-danger" aria-label="Close"></a>
             </div>
-            <div class="modal-body d-flex align-items-center justify-content-evenly p-4">
+            <div class="modal-body d-flex align-items-middle justify-content-evenly p-4">
 
                 <form action="controllers/admin/profile.controller.php" method="POST" enctype="multipart/form-data" id="imageForm">
                     <label for="fileInput" class="profile-wrapper mb-3">
@@ -85,7 +85,15 @@
                     <h5 class="mb-1 text-primary"><?php echo $_SESSION['user']['name']; ?></h5>
                     <p class="mb-1"><?php echo $_SESSION['user']['email']; ?></p>
                     <p class="text-muted mb-0">
-                        <i class="bi bi-telephone"></i> 2222223333
+                        <?php
+                        if ($_SESSION['user']['role'] == 'admin') {
+                            echo "Administrator";
+                        } elseif ($_SESSION['user']['role'] == 'user') {
+                            echo "User";
+                        } else {
+                            echo "Unknown Role";
+                        }
+                        ?>
                     </p>
                 </div>
 
