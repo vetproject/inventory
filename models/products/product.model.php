@@ -84,16 +84,16 @@ function addProduct($name, $quantity, $category, $brand, $price, $userId): bool
     return $result;
 }
 
-function report_product($name, $quantity, $category, $brand, $price, $userId): bool
+function report_product($name, $quantity, $category, $brand, $price, $userId,$description,$type): bool
 {
     global $mysqli; // Use the mysqli connection
-    $statement = $mysqli->prepare("INSERT INTO report_product (name, quantity, category, brand, price, user_id) VALUES (?, ?, ?, ?, ?, ?)");
+    $statement = $mysqli->prepare("INSERT INTO report_product (name, quantity, category, brand, price, user_id,des,report_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
     if ($statement === false) {
         die("Prepare failed: " . htmlspecialchars($mysqli->error));
     }
 
-    $statement->bind_param('sissdi', $name, $quantity, $category, $brand, $price, $userId);
+    $statement->bind_param('sissdiss', $name, $quantity, $category, $brand, $price, $userId, $description, $type);
     $result = $statement->execute();
 
     if ($result === false) {
@@ -104,18 +104,48 @@ function report_product($name, $quantity, $category, $brand, $price, $userId): b
     return $result;
 }
 
-function getAllreports($userId): array
+function getAllreportsaddmore($userId): array
 {
     global $mysqli; // Use the mysqli connection
-    $query = "SELECT * FROM report_product WHERE user_id = $userId ORDER BY id DESC";
-    $result = $mysqli->query($query);
+    $statement = $mysqli->prepare("SELECT * FROM report_product WHERE user_id = ? AND report_type = 'addmore' ORDER BY id DESC");
+
+    if ($statement === false) {
+        die("Prepare failed: " . $mysqli->error);
+    }
+
+    $statement->bind_param('i', $userId);
+    $statement->execute();
+    $result = $statement->get_result();
 
     if ($result === false) {
-        die("Query failed: " . $mysqli->error);
+        die("Execute failed: " . $statement->error);
     }
 
     $reports = $result->fetch_all(MYSQLI_ASSOC);
     $result->free(); // Free the result set
+    $statement->close();
+    return $reports;
+}
+function getAllreportsAdjust($userId): array
+{
+    global $mysqli; // Use the mysqli connection
+    $statement = $mysqli->prepare("SELECT * FROM report_product WHERE user_id = ? AND report_type = 'adjust' ORDER BY id DESC");
+
+    if ($statement === false) {
+        die("Prepare failed: " . $mysqli->error);
+    }
+
+    $statement->bind_param('i', $userId);
+    $statement->execute();
+    $result = $statement->get_result();
+
+    if ($result === false) {
+        die("Execute failed: " . $statement->error);
+    }
+
+    $reports = $result->fetch_all(MYSQLI_ASSOC);
+    $result->free(); // Free the result set
+    $statement->close();
     return $reports;
 }
 
@@ -162,7 +192,7 @@ function deleteProduct($productId): bool
     return $result;
 }
 
-function updateProduct($productId, $newProductName, $newQuantity, $newCategory, $newBrand, $newPrice): bool
+function updateProduct($productId, $newProductName, $newupQuantity, $newCategory, $newBrand, $newPrice): bool
 {
     global $mysqli; // Use the mysqli connection
     $statement = $mysqli->prepare("UPDATE products SET name = ?, quantity = ?, category = ?, brand = ?, price = ? WHERE id = ?");
@@ -171,7 +201,7 @@ function updateProduct($productId, $newProductName, $newQuantity, $newCategory, 
         die("Prepare failed: " . $mysqli->error);
     }
 
-    $statement->bind_param('sissdi', $newProductName, $newQuantity, $newCategory, $newBrand, $newPrice, $productId);
+    $statement->bind_param('sissdi', $newProductName, $newupQuantity, $newCategory, $newBrand, $newPrice, $productId);
     $result = $statement->execute();
 
     if ($result === false) {

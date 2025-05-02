@@ -6,7 +6,6 @@ $products = getAllProducts($userId);
 
 $brands = getBrands();
 
-
 // get all categories from the database
 $categories = getAllCategories();
 
@@ -78,12 +77,12 @@ $categories = getAllCategories();
                     <?php foreach ($products as $product): ?>
                         <tr style="font-size: 12px;">
                             <td class="text-center p-1 align-middle"><?= ++$loopIndex ?></td>
-                            <td class="p-1 align-middle"><?= htmlspecialchars($product['name']) ?></td>
-                            <td class="text-center p-1 align-middle quantity-cell" data-id="<?= htmlspecialchars($product['id']) ?>">
-                                <?= htmlspecialchars($product['quantity']) ?>
+                            <td class="p-1 align-middle"><?= htmlspecialchars($product['name'] ?? '') ?></td>
+                            <td class="text-center p-1 align-middle quantity-cell" data-id="<?= htmlspecialchars($product['id'] ?? '') ?>">
+                                <?= htmlspecialchars($product['quantity'] ?? '') ?>
                             </td>
-                            <td class="text-center p-1 align-middle"><?= htmlspecialchars($product['category']) ?></td>
-                            <td class="p-1 align-middle"><?= htmlspecialchars($product['brand']) ?></td>
+                            <td class="text-center p-1 align-middle"><?= htmlspecialchars($product['category'] ?? '') ?></td>
+                            <td class="p-1 align-middle"><?= htmlspecialchars($product['brand'] ?? '') ?></td>
                             <td class="p-1 align-middle text-center">
                                 <button class="btn btn-warning btn-xs edit-button" style="font-size: 10px; padding: 2px 5px;"
                                     data-id="<?= htmlspecialchars($product['id']) ?>"
@@ -105,7 +104,26 @@ $categories = getAllCategories();
                                     data-name="<?= htmlspecialchars($product['name']) ?>">
                                     <i class="fas fa-plus-circle"></i> Add
                                 </button>
-                                <form class="delete-button" method="POST" action="controllers/products/delete.product.controller.php" style="display: inline;">
+                                <button class="btn btn-info btn-xs view-button adjust-button" style="font-size: 10px; padding: 2px 5px;" title="Adjust Product"
+                                    data-id="<?= htmlspecialchars($product['id']) ?>"
+                                    data-name="<?= htmlspecialchars($product['name']) ?>"
+                                    data-quantity="<?= htmlspecialchars($product['quantity']) ?>"
+                                    data-category="<?= htmlspecialchars($product['category']) ?>"
+                                    data-brand="<?= htmlspecialchars($product['brand']) ?>"
+                                    data-price="<?= htmlspecialchars($product['price']) ?>">
+                                    <i class="fas fa-sliders-h"></i> Adjust
+                                </button>
+                                <button class="btn btn-success btn-xs add-product-btn" style="font-size: 10px; padding: 2px 5px;" title="Add Product"
+                                    data-id="<?= htmlspecialchars($product['id']) ?>"
+                                    data-name="<?= htmlspecialchars($product['name']) ?>"
+                                    data-quantity="<?= htmlspecialchars($product['quantity']) ?>"
+                                    data-category="<?= htmlspecialchars($product['category']) ?>"
+                                    data-brand="<?= htmlspecialchars($product['brand']) ?>"
+                                    data-price="<?= htmlspecialchars($product['price']) ?>">
+                                    <i class="fas fa-plus-circle"></i> Add
+                                </button>
+
+                                <form class=" delete-button" method="POST" action="controllers/products/delete.product.controller.php" style="display: inline;">
                                     <input type="hidden" name="id" value="<?= htmlspecialchars($product['id']) ?>">
                                     <button type="submit" class="btn btn-danger btn-xs" style="font-size: 10px; padding: 2px 5px;" title="Delete Product">
                                         <i class="fas fa-trash"></i> Delete
@@ -151,92 +169,167 @@ $categories = getAllCategories();
     </div>
 </div>
 
+<!-- Add More Quantity Products Modal ---------------------------------------->
+<div class="modal fade" id="addMoreProductModal" tabindex="-1" aria-labelledby="addMoreProductModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addMoreProductModalLabel">Add More Product</h5>
+                <button type="button" class="btn-close text-danger" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1.2rem; border: none; background: transparent;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addMoreProductForm" method="POST" action="controllers/products/add.quantity.product.controller.php">
+                    <input type="hidden" name="id" id="addMoreProductId">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="addMoreProductName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="addMoreProductName" name="name" readonly>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="addMoreProductQuantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" id="" placeholder="Enter the quantity you wish to add more" name="quantity" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="addMoreProductCategory" class="form-label">Category</label>
+                            <input type="text" class="form-control" id="addMoreProductCategory" name="category" readonly>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="addMoreProductBrand" class="form-label">Brand</label>
+                            <input type="text" class="form-control" id="addMoreProductBrand" name="brand" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="addMoreProductPrice" class="form-label">Price</label>
+                            <input type="text" class="form-control" id="" placeholder="Enter product price" name="price" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <input type="hidden" name="user_id" value="<?= htmlspecialchars($userId) ?>">
+                            <input type="hidden" name="old_quantity" id="old_quantity">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function() {
-        let productList = {};
+        $('.add-product-btn').on('click', function() {
+            const id = $(this).data('id');
+            const name = $(this).data('name');
+            const quantity = $(this).data('quantity');
+            const category = $(this).data('category');
+            const brand = $(this).data('brand');
+            const price = $(this).data('price');
+            const oldQuantity = $(this).data('quantity');
 
-        $('.addProduct').on('click', function() {
-            const productId = $(this).data('id');
-            const productName = $(this).data('name');
-            const quantityCell = $(`.quantity-cell[data-id="${productId}"]`);
+            $('#addMoreProductId').val(id);
+            $('#addMoreProductName').val(name);
+            $('#addMoreProductQuantity').val(quantity);
+            $('#addMoreProductCategory').val(category);
+            $('#addMoreProductBrand').val(brand);
+            $('#addMoreProductPrice').val(price);
+            $('#old_quantity').val(oldQuantity);
 
-            if (!productList[productId]) {
-                productList[productId] = {
-                    id: productId,
-                    name: productName,
-                    count: 1
-                };
-                $('#exportedProductsList').append(`
-                    <tr id="productRow-${productId}" style="font-size: 10px;">
-                        <td class="text-center">${Object.keys(productList).length}</td>
-                        <td>${productName}</td>
-                        <td class="text-center" id="productCount-${productId}">1</td>
-                        <td class="text-center">${productId}</td>
-                    </tr>
-                `);
-            } else {
-                productList[productId].count++;
-                $(`#productCount-${productId}`).text(productList[productId].count);
-            }
-
-            // Update quantity in the product list
-            const currentQuantity = parseInt(quantityCell.text());
-            quantityCell.text(currentQuantity - 1);
-
-            $('#exportView').show();
-        });
-
-        $('.decreaseProduct').on('click', function() {
-            const productId = $(this).data('id');
-            const quantityCell = $(`.quantity-cell[data-id="${productId}"]`);
-
-            if (productList[productId] && productList[productId].count > 1) {
-                productList[productId].count--;
-                $(`#productCount-${productId}`).text(productList[productId].count);
-
-                if (productList[productId].count === 0) {
-                    delete productList[productId];
-                    $(`#productRow-${productId}`).remove();
-                }
-            }
-
-            // Update quantity in the product list
-            const oldQuantity = quantityCell.data('old-quantity') || parseInt(quantityCell.text());
-            quantityCell.data('old-quantity', oldQuantity);
-
-            const currentQuantity = parseInt(quantityCell.text());
-            if (currentQuantity <= oldQuantity) {
-                quantityCell.text(currentQuantity + 1);
-                productList[productId].count--;
-                if (productList[productId].count === 0) {
-                    delete productList[productId];
-                    $(`#productRow-${productId}`).remove();
-                }
-            } else {
-               
-            }
-        });
-
-        $('.export-button').on('click', function() {
-            $('.export-button,.edit-button,.view-button,.delete-button').hide();
-            $('#exportView').show();
-            $('.addProduct,.decreaseProduct').show();
-        });
-
-        $('#closeExportView').on('click', function() {
-            $('.export-button,.edit-button,.view-button,.delete-button').show();
-            $('.addProduct,.decreaseProduct').hide();
-            $('#exportView').hide();
-        });
-
-        $('#exportProducts').on('click', function() {
-            const exportedProducts = Object.values(productList);
-            $('#exportedProductsInput').val(JSON.stringify(exportedProducts));
+            $('#addMoreProductModal').modal('show');
         });
     });
 </script>
 
-<!-- Edit Product Modal -->
+<!-- add more quantity products ----------------------------------------->
+
+
+<!-- Adjust Product Modal JS -------------------------------------------->
+
+<div class="modal fade" id="adjustProductModal" tabindex="-1" aria-labelledby="adjustProductModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="adjustProductForm" method="POST" action="controllers/products/adjust.product.controller.php">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adjustProductModalLabel">Adjust Product</h5>
+                    <button type="button" class="btn-close text-danger" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1.2rem; border: none; background: transparent;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id" id="adjustProductId">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="adjustProductName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="adjustProductName" name="name" readonly>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="adjustProductQuantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" id="adjustProductQuantity" name="quantity" required>
+                        </div>
+                    </div>
+                    <input type="hidden" class="form-control" id="adjustProductOldQuantity" name="old_quantity" readonly>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="adjustProductCategory" class="form-label">Category</label>
+                            <input type="text" class="form-control" id="adjustProductCategory" name="category" readonly>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="adjustProductBrand" class="form-label">Brand</label>
+                            <input type="text" class="form-control" id="adjustProductBrand" name="brand" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="adjustProductPrice" class="form-label">Price</label>
+                            <input type="text" class="form-control" id="adjustProductPrice" name="price" readonly>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="adjustProductDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="adjustProductDescription" name="description" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <input type="hidden" name="user_id" value="<?= htmlspecialchars($userId) ?>">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('.adjust-button').on('click', function() {
+            const id = $(this).data('id');
+            const name = $(this).data('name');
+            const quantity = $(this).data('quantity');
+            const category = $(this).data('category');
+            const brand = $(this).data('brand');
+            const price = $(this).data('price');
+            const oldQuantity = $(this).data('quantity');
+
+            $('#adjustProductId').val(id);
+            $('#adjustProductName').val(name);
+            $('#adjustProductQuantity').val(quantity);
+            $('#adjustProductOldQuantity').val(oldQuantity);
+            $('#adjustProductCategory').val(category);
+            $('#adjustProductBrand').val(brand);
+            $('#adjustProductPrice').val(price);
+
+            $('#adjustProductModal').modal('show');
+        });
+    });
+</script>
+
+<!-- Adjust Product Modal JS ----------------------------------------->
+
+<!-- Edit Product Modal ---------------------------------------------->
 <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -309,7 +402,86 @@ $categories = getAllCategories();
         });
     });
 </script>
+<!-- Edit Product Modal JS ----------------------------------------->
 
+<!-- js for export product -------------------------------------------->
+<script>
+    $(document).ready(function() {
+        let productList = {};
+
+        $('.addProduct').on('click', function() {
+            const productId = $(this).data('id');
+            const productName = $(this).data('name');
+            const quantityCell = $(`.quantity-cell[data-id="${productId}"]`);
+
+            if (!productList[productId]) {
+                productList[productId] = {
+                    id: productId,
+                    name: productName,
+                    count: 1
+                };
+                $('#exportedProductsList').append(`
+                    <tr id="productRow-${productId}" style="font-size: 10px;">
+                        <td class="text-center">${Object.keys(productList).length}</td>
+                        <td>${productName}</td>
+                        <td class="text-center" id="productCount-${productId}">1</td>
+                        <td class="text-center">${productId}</td>
+                    </tr>
+                `);
+            } else {
+                productList[productId].count++;
+                $(`#productCount-${productId}`).text(productList[productId].count);
+            }
+
+            // Update quantity in the product list
+            const currentQuantity = parseInt(quantityCell.text());
+            quantityCell.text(currentQuantity - 1);
+
+            $('#exportView').show();
+        });
+
+        $('.decreaseProduct').on('click', function() {
+            const productId = $(this).data('id');
+            const quantityCell = $(`.quantity-cell[data-id="${productId}"]`);
+
+            if (productList[productId] && productList[productId].count > 0) {
+                productList[productId].count--;
+                $(`#productCount-${productId}`).text(productList[productId].count);
+
+                if (productList[productId].count === 0) {
+                    delete productList[productId];
+                    $(`#productRow-${productId}`).remove();
+                }
+            }
+
+            // Update quantity in the product list
+            const oldQuantity = parseInt(quantityCell.data('old-quantity')) || parseInt(quantityCell.text());
+            quantityCell.data('old-quantity', oldQuantity);
+
+            const currentQuantity = parseInt(quantityCell.text());
+            if (currentQuantity < oldQuantity) {
+                quantityCell.text(currentQuantity + 1);
+            }
+        });
+
+        $('.export-button').on('click', function() {
+            $('.export-button,.edit-button,.view-button,.delete-button,.add-product-btn').hide();
+            $('#exportView').show();
+            $('.addProduct,.decreaseProduct').show();
+        });
+
+        $('#closeExportView').on('click', function() {
+            $('.export-button,.edit-button,.view-button,.delete-button,.add-product-btn').show();
+            $('.addProduct,.decreaseProduct').hide();
+            $('#exportView').hide();
+        });
+
+        $('#exportProducts').on('click', function() {
+            const exportedProducts = Object.values(productList);
+            $('#exportedProductsInput').val(JSON.stringify(exportedProducts));
+        });
+    });
+</script>
 
 
 <!-- Filter and search functionality -->

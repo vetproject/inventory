@@ -33,45 +33,43 @@
             <div class="" id="sidebar-menu">
                 <ul class="nav flex-column mt-3">
                     <li class="nav-item">
-                        <a class="nav-link active d-flex align-items-center text-white" href="/dashboard">
+                        <a class="nav-link d-flex align-items-center <?= ($_SERVER['REQUEST_URI'] == '/dashboard') ? 'text-danger' : 'text-white'; ?>" href="/dashboard">
                             <i class="fa fa-tachometer-alt mr-2" style="font-size: 1.5em;"></i> <span>Dashboard</span>
                         </a>
                     </li>
                     <?php if (isset($_SESSION['user']['role']) && $_SESSION['user']['role'] === 'admin'): ?>
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center text-white" href="/manage_users">
+                            <a class="nav-link d-flex align-items-center <?= ($_SERVER['REQUEST_URI'] == '/manage_users') ? 'text-danger' : 'text-white'; ?>" href="/manage_users">
                                 <i class="fa fa-users mr-2" style="font-size: 1.5em;"></i> <span>Manage Users</span>
                             </a>
                         </li>
                     <?php endif; ?>
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center text-white" href="/products">
+                        <a class="nav-link d-flex align-items-center <?= ($_SERVER['REQUEST_URI'] == '/products') ? 'text-danger' : 'text-white'; ?>" href="/products">
                             <i class="fa fa-boxes mr-2" style="font-size: 1.5em;"></i> <span>Manage Products</span>
-
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center text-white" href="#" data-toggle="collapse" data-target="#reportsDropdown" aria-expanded="false" aria-controls="reportsDropdown">
+                        <a class="nav-link d-flex align-items-center <?= (strpos($_SERVER['REQUEST_URI'], '/reports') !== false) ? 'text-danger' : 'text-white'; ?>" href="#" data-toggle="collapse" data-target="#reportsDropdown" aria-expanded="false" aria-controls="reportsDropdown">
                             <i class="fa fa-chart-line mr-2" style="font-size: 1.5em;"></i> <span>View Reports</span>
                             <i class="fa fa-chevron-down ml-auto" style="font-size: 1em;"></i>
                         </a>
                         <div id="reportsDropdown" class="collapse pl-3">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link text-light small py-1" href="/import_product">Import Product</a>
+                                    <a class="nav-link <?= ($_SERVER['REQUEST_URI'] == '/import_product') ? 'text-danger' : 'text-light'; ?> small py-1" href="/import_product">Import Product</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-light small py-1" href="/export_product">Export Product</a>
+                                    <a class="nav-link <?= ($_SERVER['REQUEST_URI'] == '/export_product') ? 'text-danger' : 'text-light'; ?> small py-1" href="/export_product">Export Product</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-light small py-1" href="/adjustment_product">Adjustment</a>
+                                    <a class="nav-link <?= ($_SERVER['REQUEST_URI'] == '/adjustment_product') ? 'text-danger' : 'text-light'; ?> small py-1" href="/adjustment_product">Adjustment</a>
                                 </li>
                             </ul>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link d
-                        align-items-center text-white" href="/logout">
+                        <a class="nav-link d-flex align-items-center <?= ($_SERVER['REQUEST_URI'] == '/logout') ? 'text-danger' : 'text-white'; ?>" href="/logout">
                             <i class="fa fa-sign-out-alt mr-2" style="font-size: 1.5em;"></i> <span>Logout</span>
                         </a>
                     </li>
