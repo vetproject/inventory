@@ -126,35 +126,41 @@ if (file_exists(__DIR__ . '/../../../models/products/product.model.php')) {
             </div>
             <div class="modal-body">
                 <form id="addProductForm" method="POST" action="controllers/products/add.product.controller.php">
-                    <div class="mb-3">
-                        <label for="productName" class="form-label">Product Name:</label>
-                        <input type="text" class="form-control" id="productName" name="productName" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="productQuantity" class="form-label">Quantity:</label>
-                        <input type="number" class="form-control" id="productQuantity" name="productQuantity" required min="0">
-                    </div>
-                    <div class="mb-3">
-                        <label for="productCategory" class="form-label" style="font-size: 12px;">Category:</label>
-                        <div class="input-group input-group-sm">
-                            <select class="form-select border-secondary" id="productCategory" name="productCategory" required style="font-size: 12px; height: 35px;">
-                                <option value="" disabled selected>Select Category</option>
-                                <?php foreach ($categories as $category): ?>
-                                    <option value="<?= htmlspecialchars($category['name']) ?>"><?= htmlspecialchars($category['name']) ?></option>
-                                <?php endforeach; ?>
-                            </select>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="productName" class="form-label">Product Name:</label>
+                            <input type="text" class="form-control" id="productName" name="productName" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="productQuantity" class="form-label">Quantity:</label>
+                            <input type="number" class="form-control" id="productQuantity" name="productQuantity" required min="0">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="productCategory" class="form-label" style="font-size: 12px;">Category:</label>
+                            <div class="input-group input-group-sm">
+                                <select class="form-select border-secondary" id="productCategory" name="productCategory" required style="font-size: 12px; height: 35px;">
+                                    <option value="" disabled selected>Select Category</option>
+                                    <?php foreach ($categories as $category): ?>
+                                        <option value="<?= htmlspecialchars($category['name']) ?>"><?= htmlspecialchars($category['name']) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="productBrand" class="form-label">Brand:</label>
+                            <input type="text" class="form-control" id="productBrand" name="productBrand">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="productPrice" class="form-label">Price:</label>
+                            <input type="number" class="form-control" id="productPrice" name="productPrice" step="0.01" required min="0">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="productDescription" class="form-label">Description:</label>
+                            <textarea class="form-control" id="productDescription" name="productDescription" rows="3"></textarea>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="productBrand" class="form-label">Brand:</label>
-                        <input type="text" class="form-control" id="productBrand" name="productBrand">
-                    </div>
-                    <div class="mb-3">
-                        <label for="productPrice" class="form-label">Price:</label>
-                        <input type="number" class="form-control" id="productPrice" name="productPrice" step="0.01" required min="0">
-                    </div>
                     <input type="hidden" name="user_id" id="user_id" value="<?= isset($_SESSION['user']['id']) ? htmlspecialchars($_SESSION['user']['id']) : '' ?>">
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="submit" class="btn btn-success mt-3">Submit</button>
                 </form>
             </div>
         </div>

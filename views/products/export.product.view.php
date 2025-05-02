@@ -16,6 +16,7 @@ if ($exports) {
         if (is_array($products)) {
             foreach ($products as $product) {
                 $product['created_at'] = $export['created_at'];
+                $product['description'] = $export['description'];
                 $allProducts[] = $product;
             }
         }
@@ -57,7 +58,7 @@ require_once 'layouts/header.php';
                 <div class="table-responsive">
                     <table id="productTable" class="table table-sm table-bordered text-center">
                         <thead class="thead-light">
-                            <tr><th>#</th><th>Name</th><th>Qty</th><th>Date</th></tr>
+                            <tr><th>#</th><th>Name</th><th>Qty</th><th>Date</th><th>Description</th></tr>
                         </thead>
                         <tbody>
                             <?php foreach ($allProducts as $index => $product): ?>
@@ -66,6 +67,7 @@ require_once 'layouts/header.php';
                                     <td><?= htmlspecialchars($product['name']) ?></td>
                                     <td><?= htmlspecialchars($product['count']) ?></td>
                                     <td><?= htmlspecialchars(date('Y-m-d', strtotime($product['created_at']))) ?></td>
+                                    <td><?= htmlspecialchars($product['description']) ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

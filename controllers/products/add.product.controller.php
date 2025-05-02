@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $brand = $_POST['productBrand'];
     $price = $_POST['productPrice'];
     $userId = $_POST['user_id'];
-    $description = 'null';
+    $description = $_POST['productDescription'];
     $type = 'addmore';
 
     // echo "$name, $quantity, $category, $brand, $price ,$userId" ;

@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userId = isset($_POST['user_id']) ? $_POST['user_id'] : null;
     $oldQuantity = $_POST['old_quantity'];
     $type = 'addmore';
-    $description = isset($_POST['description']) ? $_POST['description'] : null;
+    $description = $_POST['description'];
     $newupQuantity = (int)$quantity + (int)$oldQuantity;
 
 

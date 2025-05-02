@@ -208,10 +208,12 @@ $categories = getAllCategories();
                             <input type="text" class="form-control" id="" placeholder="Enter product price" name="price" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <input type="hidden" name="user_id" value="<?= htmlspecialchars($userId) ?>">
-                            <input type="hidden" name="old_quantity" id="old_quantity">
+                            <label for="addMoreProductDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="" name="description" rows="3"></textarea>
                         </div>
                     </div>
+                    <input type="hidden" name="user_id" value="<?= htmlspecialchars($userId) ?>">
+                    <input type="hidden" name="old_quantity" id="old_quantity">
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>

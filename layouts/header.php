@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,7 @@ require_once './models/products/product.model.php';
 $userId = isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : null;
 $lessQuantity = getLessQuantity($userId);
 ?>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-dark p-3" style="height: 11vh;">
         <a class="navbar-brand text-light" href="/dashboard">Inventory Management</a>
@@ -22,22 +24,34 @@ $lessQuantity = getLessQuantity($userId);
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
-                    <a class="nav-link text-light dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link text-light dropdown-toggle position-relative" href="#" id="notificationsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Notifications
+                        <?php if (!empty($lessQuantity)): ?>
+                            <span class="badge badge-danger position-absolute" style="top: 0; right: 0; transform: translate(50%, -50%);">
+                                <?php echo count($lessQuantity); ?>
+                            </span>
+                        <?php endif; ?>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationsDropdown">
-                        <?php foreach ($lessQuantity as $item): ?>
-                            <a class="dropdown-item" href="#"><?php echo htmlspecialchars($item['name']); ?> is low in stock</a>
-                        <?php endforeach; ?>
+                        <?php if (!empty($lessQuantity)): ?>
+                            <?php foreach ($lessQuantity as $item): ?>
+                                <a class="dropdown-item" href="#">
+                                    <?php echo htmlspecialchars($item['name']); ?> is low in stock
+                                </a>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <a class="dropdown-item" href="#">No notifications</a>
+                        <?php endif; ?>
+
                     </div>
                 </li>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link text-light dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Profile
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown">
                         <a class="dropdown-item" href="/profile">My Profile</a>
-                        <a class="dropdown-item" href="#">Settings</a>
                         <a class="dropdown-item" href="/logout">Logout</a>
                     </div>
                 </li>
@@ -49,4 +63,5 @@ $lessQuantity = getLessQuantity($userId);
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>
