@@ -92,92 +92,92 @@ $productDate = getProductDate($userId);
     </div>
     <script src="path/to/your/js/file.js"></script>
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const ctx = document.getElementById('productDate').getContext('2d');
-        let chart = null;
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('productDate').getContext('2d');
+            let chart = null;
 
-        // Initial chart data
-        const initialData = <?php echo json_encode($productDate); ?>;
+            // Initial chart data
+            const initialData = <?php echo json_encode($productDate); ?>;
 
-        // Function to group data by a given period (day, month, year)
-        function groupData(data, period) {
-            return data.reduce((acc, item) => {
-                let date;
-                const dateObj = new Date(item.date);
+            // Function to group data by a given period (day, month, year)
+            function groupData(data, period) {
+                return data.reduce((acc, item) => {
+                    let date;
+                    const dateObj = new Date(item.date);
 
-                if (period === 'day') {
-                    date = dateObj.toISOString().split('T')[0]; // 'YYYY-MM-DD'
-                } else if (period === 'month') {
-                    date = `${dateObj.getFullYear()}-${dateObj.getMonth() + 1}`; // 'YYYY-MM'
-                } else if (period === 'year') {
-                    date = `${dateObj.getFullYear()}`; // 'YYYY'
-                }
+                    if (period === 'day') {
+                        date = dateObj.toISOString().split('T')[0]; // 'YYYY-MM-DD'
+                    } else if (period === 'month') {
+                        date = `${dateObj.getFullYear()}-${dateObj.getMonth() + 1}`; // 'YYYY-MM'
+                    } else if (period === 'year') {
+                        date = `${dateObj.getFullYear()}`; // 'YYYY'
+                    }
 
-                if (!acc[date]) {
-                    acc[date] = 0;
-                }
-                acc[date] += item.quantity;
-                return acc;
-            }, {});
-        }
-
-        // Function to update the chart
-        function updateChart(data, period) {
-            const groupedData = groupData(data, period);
-            const labels = Object.keys(groupedData);
-            const chartData = Object.values(groupedData);
-
-            if (chart) {
-                chart.destroy(); // Destroy existing chart before creating a new one
+                    if (!acc[date]) {
+                        acc[date] = 0;
+                    }
+                    acc[date] += item.quantity;
+                    return acc;
+                }, {});
             }
 
-            chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: `Quantity by ${period.charAt(0).toUpperCase() + period.slice(1)}`,
-                        data: chartData,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderWidth: 2,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top'
-                        }
+            // Function to update the chart
+            function updateChart(data, period) {
+                const groupedData = groupData(data, period);
+                const labels = Object.keys(groupedData);
+                const chartData = Object.values(groupedData);
+
+                if (chart) {
+                    chart.destroy(); // Destroy existing chart before creating a new one
+                }
+
+                chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: `Quantity by ${period.charAt(0).toUpperCase() + period.slice(1)}`,
+                            data: chartData,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderWidth: 2,
+                            tension: 0.4
+                        }]
                     },
-                    scales: {
-                        x: {
-                            title: {
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
                                 display: true,
-                                text: period.charAt(0).toUpperCase() + period.slice(1)
+                                position: 'top'
                             }
                         },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Quantity'
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: period.charAt(0).toUpperCase() + period.slice(1)
+                                }
                             },
-                            beginAtZero: true
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Quantity'
+                                },
+                                beginAtZero: true
+                            }
                         }
                     }
-                }
-            });
-        }
+                });
+            }
 
-        // Initialize chart with 'Day' view
-        updateChart(initialData, 'day');
+            // Initialize chart with 'Day' view
+            updateChart(initialData, 'day');
 
-        // Filter button event listeners
-        document.getElementById('filterDay1').addEventListener('click', () => updateChart(initialData, 'day'));
-        document.getElementById('filterMonth1').addEventListener('click', () => updateChart(initialData, 'month'));
-        document.getElementById('filterYear1').addEventListener('click', () => updateChart(initialData, 'year'));
-    });
-</script>
+            // Filter button event listeners
+            document.getElementById('filterDay1').addEventListener('click', () => updateChart(initialData, 'day'));
+            document.getElementById('filterMonth1').addEventListener('click', () => updateChart(initialData, 'month'));
+            document.getElementById('filterYear1').addEventListener('click', () => updateChart(initialData, 'year'));
+        });
+    </script>
 </div>
